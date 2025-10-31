@@ -15,83 +15,81 @@
                     </div>
                     
                     <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="ItemName">Item Name / Title <span class="text-danger">*</span></label>
+                        <div class="col-md-6">
+                            <label for="Brand">Brand <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control override-input" placeholder="Enter brand" data-key="Brand">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ItemName">Item <span class="text-danger">*</span></label>
                             <input type="text" class="form-control override-input" placeholder="Enter item name" data-key="ItemName">
                         </div>
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="ItemDescription">Description</label>
-                            <textarea class="form-control override-input" rows="3" placeholder="Enter item description (optional)" data-key="ItemDescription"></textarea>
+                        <div class="col-md-6">
+                            <label for="VariantOne">Variant 1</label>
+                            <input type="text" class="form-control override-input" placeholder="Enter first variant" data-key="VariantOne">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="VariantTwo">Variant 2</label>
+                            <input type="text" class="form-control override-input" placeholder="Enter second variant" data-key="VariantTwo">
                         </div>
                     </div>
 
-                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="Size">Size</label>
+                            <input type="text" class="form-control override-input" placeholder="Enter size" data-key="Size">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="Microns">Microns</label>
+                            <input type="text" class="form-control override-input" placeholder="Enter microns" data-key="Microns">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="Gsm">GSM</label>
+                            <input type="text" class="form-control override-input" placeholder="Enter GSM" data-key="Gsm">
+                        </div>
+                    </div>
 
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="ItemPrice">Bundle Price <span class="text-danger">*</span></label>
+                        <div class="col-md-4">
+                            <label for="SheetsPerPack">Sheets Per Pack</label>
                             <input 
                                 type="number" 
-                                step="0.01"
-                                class="form-control override-input text-right" 
-                                placeholder="0.00" 
-                                data-key="ItemPrice">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="ItemQuantity">Packs Per Bundle <span class="text-danger">*</span></label>
-                            <input 
-                                type="number" 
+                                min="0"
                                 class="form-control override-input text-right" 
                                 placeholder="0" 
-                                data-key="ItemQuantity">
+                                data-key="SheetsPerPack">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="PriceWithoutShippingFee">Price Without Shipping Fee <span class="text-danger">*</span></label>
+                            <input 
+                                type="number" 
+                                step="0.01"
+                                min="0"
+                                class="form-control override-input text-right" 
+                                placeholder="0.00" 
+                                data-key="PriceWithoutShippingFee">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="EstimatedShippingFee">Estimated Shipping Fee</label>
+                            <input 
+                                type="number" 
+                                step="0.01"
+                                min="0"
+                                class="form-control override-input text-right" 
+                                placeholder="0.00" 
+                                data-key="EstimatedShippingFee">
                         </div>
                     </div>
 
-                    <hr>
-
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="ItemPricePerPiece">Price Per Pack <span class="text-danger">*</span></label>
-                            <input 
-                                type="number" 
-                                step="0.01"
-                                class="form-control override-input text-right" 
-                                placeholder="0.00" 
-                                data-key="ItemPricePerPiece">
+                        <div class="col-md-4">
+                            <label for="DatePurchased">Date Purchased</label>
+                            <input type="date" class="form-control override-input" data-key="DatePurchased">
                         </div>
-                        <div class="col-md-6">
-                            <label for="ItemPartsPerPiece">Parts Per Piece <span class="text-danger">*</span></label>
-                            <input 
-                                type="number" 
-                                class="form-control override-input text-right" 
-                                placeholder="0" 
-                                data-key="ItemPartsPerPiece">
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="ItemPricePerPart">Price Per Part <span class="text-danger">*</span></label>
-                            <input 
-                                type="number" 
-                                step="0.01"
-                                class="form-control override-input text-right" 
-                                placeholder="0.00" 
-                                data-key="ItemPricePerPart">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="ItemPricePerPartOfPiece">Price Per Part of Piece <span class="text-danger">*</span></label>
-                            <input 
-                                type="number" 
-                                step="0.01"
-                                class="form-control override-input text-right" 
-                                placeholder="0.00" 
-                                data-key="ItemPricePerPartOfPiece">
+                        <div class="col-md-8 d-flex flex-column justify-content-end">
+                            <small class="text-muted">Provide the purchase date to help track inventory batches and pricing history.</small>
                         </div>
                     </div>
                 </div>

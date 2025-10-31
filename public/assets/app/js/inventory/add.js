@@ -38,24 +38,21 @@ $(document).ready(function () {
                     var item = result.data;
 
                     // Populate form fields
+                    $('[data-key="Brand"]').val(item.brand);
                     $('[data-key="ItemName"]').val(item.item_name);
-                    $('[data-key="ItemDescription"]').val(
-                        item.item_description
+                    $('[data-key="VariantOne"]').val(item.variant_one);
+                    $('[data-key="VariantTwo"]').val(item.variant_two);
+                    $('[data-key="Size"]').val(item.size);
+                    $('[data-key="Microns"]').val(item.microns);
+                    $('[data-key="Gsm"]').val(item.gsm);
+                    $('[data-key="SheetsPerPack"]').val(item.sheets_per_pack);
+                    $('[data-key="PriceWithoutShippingFee"]').val(
+                        item.price_without_shipping_fee
                     );
-                    $('[data-key="ItemPrice"]').val(item.item_price);
-                    $('[data-key="ItemQuantity"]').val(item.item_quantity);
-                    $('[data-key="ItemPricePerPiece"]').val(
-                        item.item_price_per_piece
+                    $('[data-key="EstimatedShippingFee"]').val(
+                        item.estimated_shipping_fee
                     );
-                    $('[data-key="ItemPartsPerPiece"]').val(
-                        item.item_parts_per_piece
-                    );
-                    $('[data-key="ItemPricePerPart"]').val(
-                        item.item_price_per_part
-                    );
-                    $('[data-key="ItemPricePerPartOfPiece"]').val(
-                        item.item_price_per_part_of_piece
-                    );
+                    $('[data-key="DatePurchased"]').val(item.date_purchased);
                 } else {
                     _show_toastr("error", result.message, "Error");
                 }
@@ -73,16 +70,21 @@ $(document).ready(function () {
     function saveItem() {
         // Collect form data
         var data = {
+            Brand: $('[data-key="Brand"]').val(),
             ItemName: $('[data-key="ItemName"]').val(),
-            ItemDescription: $('[data-key="ItemDescription"]').val(),
-            ItemPrice: $('[data-key="ItemPrice"]').val(),
-            ItemQuantity: $('[data-key="ItemQuantity"]').val(),
-            ItemPricePerPiece: $('[data-key="ItemPricePerPiece"]').val(),
-            ItemPartsPerPiece: $('[data-key="ItemPartsPerPiece"]').val(),
-            ItemPricePerPart: $('[data-key="ItemPricePerPart"]').val(),
-            ItemPricePerPartOfPiece: $(
-                '[data-key="ItemPricePerPartOfPiece"]'
+            VariantOne: $('[data-key="VariantOne"]').val(),
+            VariantTwo: $('[data-key="VariantTwo"]').val(),
+            Size: $('[data-key="Size"]').val(),
+            Microns: $('[data-key="Microns"]').val(),
+            Gsm: $('[data-key="Gsm"]').val(),
+            SheetsPerPack: $('[data-key="SheetsPerPack"]').val(),
+            PriceWithoutShippingFee: $(
+                '[data-key="PriceWithoutShippingFee"]'
             ).val(),
+            EstimatedShippingFee: $(
+                '[data-key="EstimatedShippingFee"]'
+            ).val(),
+            DatePurchased: $('[data-key="DatePurchased"]').val(),
         };
 
         // Add item ID if editing
@@ -92,13 +94,9 @@ $(document).ready(function () {
 
         // Validate required fields
         if (
+            !data.Brand ||
             !data.ItemName ||
-            !data.ItemPrice ||
-            !data.ItemQuantity ||
-            !data.ItemPricePerPiece ||
-            !data.ItemPartsPerPiece ||
-            !data.ItemPricePerPart ||
-            !data.ItemPricePerPartOfPiece
+            !data.PriceWithoutShippingFee
         ) {
             _show_toastr(
                 "warning",
@@ -110,16 +108,13 @@ $(document).ready(function () {
 
         // Validate numeric fields
         if (
-            isNaN(data.ItemPrice) ||
-            isNaN(data.ItemQuantity) ||
-            isNaN(data.ItemPricePerPiece) ||
-            isNaN(data.ItemPartsPerPiece) ||
-            isNaN(data.ItemPricePerPart) ||
-            isNaN(data.ItemPricePerPartOfPiece)
+            (data.SheetsPerPack && isNaN(data.SheetsPerPack)) ||
+            isNaN(data.PriceWithoutShippingFee) ||
+            (data.EstimatedShippingFee && isNaN(data.EstimatedShippingFee))
         ) {
             _show_toastr(
                 "warning",
-                "Price and quantity fields must be valid numbers",
+                "Numeric fields must contain valid numbers",
                 "Validation Error"
             );
             return;
@@ -172,14 +167,17 @@ $(document).ready(function () {
             loadItemData(itemId);
         } else {
             // If adding new, clear all fields
+            $('[data-key="Brand"]').val("");
             $('[data-key="ItemName"]').val("");
-            $('[data-key="ItemDescription"]').val("");
-            $('[data-key="ItemPrice"]').val("");
-            $('[data-key="ItemQuantity"]').val("");
-            $('[data-key="ItemPricePerPiece"]').val("");
-            $('[data-key="ItemPartsPerPiece"]').val("");
-            $('[data-key="ItemPricePerPart"]').val("");
-            $('[data-key="ItemPricePerPartOfPiece"]').val("");
+            $('[data-key="VariantOne"]').val("");
+            $('[data-key="VariantTwo"]').val("");
+            $('[data-key="Size"]').val("");
+            $('[data-key="Microns"]').val("");
+            $('[data-key="Gsm"]').val("");
+            $('[data-key="SheetsPerPack"]').val("");
+            $('[data-key="PriceWithoutShippingFee"]').val("");
+            $('[data-key="EstimatedShippingFee"]').val("");
+            $('[data-key="DatePurchased"]').val("");
         }
     }
 });

@@ -19,38 +19,31 @@ class ItemController extends Controller
         try {
             $items = Item::orderBy('created_at', 'desc')->get();
             
-            $data = [];
-            $lowStockCount = 0;
-            $lowStockThreshold = 10;
-            
-            foreach ($items as $item) {
-                $isLowStock = $item->item_quantity <= $lowStockThreshold;
-                if ($isLowStock) {
-                    $lowStockCount++;
-                }
-                
-                $data[] = [
+            $data = $items->map(function (Item $item) {
+                $totalPrice = (float) $item->price_without_shipping_fee + (float) $item->estimated_shipping_fee;
+
+                return [
                     'id' => $item->id,
                     'sku' => $item->sku ?? 'N/A',
+                    'brand' => $item->brand ?? '',
                     'item_name' => $item->item_name,
-                    'item_description' => $item->item_description ?? '',
-                    'item_price' => number_format($item->item_price, 2),
-                    'item_quantity' => $item->item_quantity,
-                    'item_price_per_piece' => number_format($item->item_price_per_piece, 2),
-                    'item_parts_per_piece' => $item->item_parts_per_piece,
-                    'item_price_per_part' => number_format($item->item_price_per_part, 2),
-                    'item_price_per_part_of_piece' => number_format($item->item_price_per_part_of_piece, 2),
+                    'variant_one' => $item->variant_one ?? '',
+                    'variant_two' => $item->variant_two ?? '',
+                    'size' => $item->size ?? '',
+                    'microns' => $item->microns ?? '',
+                    'gsm' => $item->gsm ?? '',
+                    'sheets_per_pack' => $item->sheets_per_pack,
+                    'price_without_shipping_fee' => number_format((float) $item->price_without_shipping_fee, 2),
+                    'estimated_shipping_fee' => number_format((float) $item->estimated_shipping_fee, 2),
+                    'total_price' => number_format($totalPrice, 2),
+                    'date_purchased' => optional($item->date_purchased)->format('Y-m-d'),
                     'created_at' => $item->created_at->format('Y-m-d H:i:s'),
-                    'is_low_stock' => $isLowStock,
-                    'stock_status' => $isLowStock ? 'low' : 'normal',
                 ];
-            }
+            })->toArray();
             
             return response()->json([
                 'status' => 'success',
                 'data' => $data,
-                'low_stock_count' => $lowStockCount,
-                'low_stock_threshold' => $lowStockThreshold
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -84,14 +77,17 @@ class ItemController extends Controller
                 'data' => [
                     'id' => $item->id,
                     'sku' => $item->sku,
+                    'brand' => $item->brand,
                     'item_name' => $item->item_name,
-                    'item_description' => $item->item_description,
-                    'item_price' => $item->item_price,
-                    'item_quantity' => $item->item_quantity,
-                    'item_price_per_piece' => $item->item_price_per_piece,
-                    'item_parts_per_piece' => $item->item_parts_per_piece,
-                    'item_price_per_part' => $item->item_price_per_part,
-                    'item_price_per_part_of_piece' => $item->item_price_per_part_of_piece,
+                    'variant_one' => $item->variant_one,
+                    'variant_two' => $item->variant_two,
+                    'size' => $item->size,
+                    'microns' => $item->microns,
+                    'gsm' => $item->gsm,
+                    'sheets_per_pack' => $item->sheets_per_pack,
+                    'price_without_shipping_fee' => $item->price_without_shipping_fee,
+                    'estimated_shipping_fee' => $item->estimated_shipping_fee,
+                    'date_purchased' => optional($item->date_purchased)->format('Y-m-d'),
                 ]
             ]);
         } catch (\Exception $e) {
@@ -109,14 +105,17 @@ class ItemController extends Controller
     {
         try {
             $rules = [
+                'Brand' => 'required|string|max:255',
                 'ItemName' => 'required|string|max:255',
-                'ItemDescription' => 'nullable|string',
-                'ItemPrice' => 'required|numeric|min:0',
-                'ItemQuantity' => 'required|integer|min:0',
-                'ItemPricePerPiece' => 'required|numeric|min:0',
-                'ItemPartsPerPiece' => 'required|integer|min:0',
-                'ItemPricePerPart' => 'required|numeric|min:0',
-                'ItemPricePerPartOfPiece' => 'required|numeric|min:0',
+                'VariantOne' => 'nullable|string|max:255',
+                'VariantTwo' => 'nullable|string|max:255',
+                'Size' => 'nullable|string|max:255',
+                'Microns' => 'nullable|string|max:255',
+                'Gsm' => 'nullable|string|max:255',
+                'SheetsPerPack' => 'nullable|integer|min:0',
+                'PriceWithoutShippingFee' => 'required|numeric|min:0',
+                'EstimatedShippingFee' => 'nullable|numeric|min:0',
+                'DatePurchased' => 'nullable|date',
             ];
 
             if ($request->has('ItemId') && $request->ItemId != '') {
@@ -133,14 +132,17 @@ class ItemController extends Controller
             }
 
             $data = [
+                'brand' => $request->Brand,
                 'item_name' => $request->ItemName,
-                'item_description' => $request->ItemDescription,
-                'item_price' => $request->ItemPrice,
-                'item_quantity' => $request->ItemQuantity,
-                'item_price_per_piece' => $request->ItemPricePerPiece,
-                'item_parts_per_piece' => $request->ItemPartsPerPiece,
-                'item_price_per_part' => $request->ItemPricePerPart,
-                'item_price_per_part_of_piece' => $request->ItemPricePerPartOfPiece,
+                'variant_one' => $request->VariantOne,
+                'variant_two' => $request->VariantTwo,
+                'size' => $request->Size,
+                'microns' => $request->Microns,
+                'gsm' => $request->Gsm,
+                'sheets_per_pack' => $request->SheetsPerPack !== null && $request->SheetsPerPack !== '' ? (int) $request->SheetsPerPack : null,
+                'price_without_shipping_fee' => $request->PriceWithoutShippingFee,
+                'estimated_shipping_fee' => $request->EstimatedShippingFee !== null && $request->EstimatedShippingFee !== '' ? $request->EstimatedShippingFee : 0,
+                'date_purchased' => $request->DatePurchased ?: null,
             ];
 
             if ($request->has('ItemId') && $request->ItemId != '') {
@@ -329,13 +331,19 @@ class ItemController extends Controller
             $generator = new BarcodeGeneratorHTML();
             $barcode = $generator->getBarcode($item->sku, $generator::TYPE_CODE_128, 3, 60);
 
+            $totalPrice = (float) $item->price_without_shipping_fee + (float) $item->estimated_shipping_fee;
+
             $data = [
                 'items' => [
                     [
                         'name' => $item->item_name,
                         'sku' => $item->sku,
                         'barcode' => $barcode,
-                        'price' => number_format($item->item_price, 2)
+                        'price' => number_format($totalPrice, 2),
+                        'brand' => $item->brand,
+                        'variant' => trim(($item->variant_one ? $item->variant_one : '') . ' ' . ($item->variant_two ? $item->variant_two : '')),
+                        'price_without_shipping_fee' => number_format((float) $item->price_without_shipping_fee, 2),
+                        'estimated_shipping_fee' => number_format((float) $item->estimated_shipping_fee, 2),
                     ]
                 ],
                 'title' => 'Barcode - ' . $item->item_name
@@ -393,7 +401,11 @@ class ItemController extends Controller
                     'name' => $item->item_name,
                     'sku' => $item->sku,
                     'barcode' => $barcode,
-                    'price' => number_format($item->item_price, 2)
+                    'price' => number_format((float) $item->price_without_shipping_fee + (float) $item->estimated_shipping_fee, 2),
+                    'brand' => $item->brand,
+                    'variant' => trim(($item->variant_one ? $item->variant_one : '') . ' ' . ($item->variant_two ? $item->variant_two : '')),
+                    'price_without_shipping_fee' => number_format((float) $item->price_without_shipping_fee, 2),
+                    'estimated_shipping_fee' => number_format((float) $item->estimated_shipping_fee, 2),
                 ];
             }
 

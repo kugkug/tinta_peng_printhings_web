@@ -80,6 +80,20 @@
             font-weight: bold;
             margin-top: 10px;
         }
+
+        .brand-text {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #111827;
+        }
+
+        .variant-text,
+        .shipping-text {
+            font-size: 12px;
+            color: #4b5563;
+            margin-top: 4px;
+        }
         
         .footer {
             margin-top: 30px;
@@ -133,13 +147,21 @@
         <div class="barcode-container">
             <div class="barcode-item">
                 <h3>{{ $item['name'] }}</h3>
+                @if(!empty($item['brand']))
+                    <p class="brand-text">Brand: {{ $item['brand'] }}</p>
+                @endif
+                @if(!empty($item['variant']))
+                    <p class="variant-text">Variant: {{ $item['variant'] }}</p>
+                @endif
                 
                 <div class="barcode-wrapper">
                     {!! $item['barcode'] !!}
                 </div>
                 
                 <p class="sku-text">SKU: {{ $item['sku'] }}</p>
-                <p class="price-text">Price: ₱{{ $item['price'] }}</p>
+                <p class="price-text">Total Price: ₱{{ $item['price'] }}</p>
+                <p class="shipping-text">Price w/o Shipping: ₱{{ $item['price_without_shipping_fee'] }}</p>
+                <p class="shipping-text">Estimated Shipping Fee: ₱{{ $item['estimated_shipping_fee'] }}</p>
             </div>
         </div>
         @endforeach

@@ -3,24 +3,6 @@
 <section class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <!-- Low Stock Alert Banner -->
-            <div id="low-stock-alert" class="alert alert-warning mb-3" style="display: none;">
-                <div class="d-flex align-items-center">
-                    <i class="fa fa-exclamation-triangle fa-2x mr-3"></i>
-                    <div class="flex-grow-1">
-                        <h5 class="alert-heading mb-1">Low Stock Alert!</h5>
-                        <p class="mb-0">
-                            <span id="low-stock-count" class="font-weight-bold">0</span> item(s) have stock levels at or below 
-                            <span id="low-stock-threshold" class="font-weight-bold">10</span> units. 
-                            Please restock soon to avoid shortages.
-                        </p>
-                    </div>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-
             <!-- Bulk Actions Bar -->
             <div id="bulk-actions-bar" class="card mb-3" style="display: none;">
                 <div class="card-body py-2">
@@ -50,11 +32,18 @@
                                         <input type="checkbox" id="select-all" title="Select All">
                                     </th>
                                     <th>SKU</th>
-                                    <th>Item Name</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Price/Piece</th>
-                                    <th>Parts/Piece</th>
+                                    <th>Brand</th>
+                                    <th>Item</th>
+                                    <th>Variant 1</th>
+                                    <th>Variant 2</th>
+                                    <th>Size</th>
+                                    <th>Microns</th>
+                                    <th>GSM</th>
+                                    <th>Sheets/Pack</th>
+                                    <th>Price (No Shipping)</th>
+                                    <th>Est. Shipping</th>
+                                    <th>Total Price</th>
+                                    <th>Date Purchased</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>

@@ -9,21 +9,23 @@ class Item extends Model
 {
     protected $fillable = [
         'sku',
+        'brand',
         'item_name',
-        'item_description',
-        'item_price',
-        'item_quantity',
-        'item_price_per_piece',
-        'item_parts_per_piece',
-        'item_price_per_part',
-        'item_price_per_part_of_piece',
+        'variant_one',
+        'variant_two',
+        'size',
+        'microns',
+        'gsm',
+        'sheets_per_pack',
+        'price_without_shipping_fee',
+        'estimated_shipping_fee',
+        'date_purchased',
     ];
 
     protected $casts = [
-        'item_price' => 'decimal:2',
-        'item_price_per_piece' => 'decimal:2',
-        'item_price_per_part' => 'decimal:2',
-        'item_price_per_part_of_piece' => 'decimal:2',
+        'price_without_shipping_fee' => 'decimal:2',
+        'estimated_shipping_fee' => 'decimal:2',
+        'date_purchased' => 'date',
     ];
 
     /**

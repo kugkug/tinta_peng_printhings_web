@@ -19,15 +19,6 @@ $(document).ready(function () {
             },
             success: function (result) {
                 if (result.status === "success") {
-                    // Show low stock alert if there are items with low stock
-                    if (result.low_stock_count && result.low_stock_count > 0) {
-                        $("#low-stock-count").text(result.low_stock_count);
-                        $("#low-stock-threshold").text(result.low_stock_threshold);
-                        $("#low-stock-alert").show();
-                    } else {
-                        $("#low-stock-alert").hide();
-                    }
-                    
                     itemsTable = $("#items-table").DataTable({
                         data: result.data,
                         columns: [
@@ -50,53 +41,77 @@ $(document).ready(function () {
                                 },
                             },
                             {
-                                data: "item_name",
-                                render: function (data, type, row) {
-                                    var lowStockBadge = row.is_low_stock
-                                        ? '<span class="badge badge-warning ml-2" title="Low Stock"><i class="fa fa-exclamation-triangle"></i> Low Stock</span>'
-                                        : "";
-                                    var desc = row.item_description
-                                        ? '<br><small class="text-muted">' +
-                                          row.item_description.substring(
-                                              0,
-                                              50
-                                          ) +
-                                          "...</small>"
-                                        : "";
-                                    return data + lowStockBadge + desc;
-                                },
-                            },
-                            {
-                                data: "item_price",
+                                data: "brand",
                                 render: function (data) {
-                                    return (
-                                        '<span class="text-success">₱' +
-                                        data +
-                                        "</span>"
-                                    );
-                                },
-                            },
-                            { 
-                                data: "item_quantity",
-                                render: function (data, type, row) {
-                                    if (row.is_low_stock) {
-                                        return (
-                                            '<span class="badge badge-danger" style="font-size: 1em;">' +
-                                            '<i class="fa fa-exclamation-triangle"></i> ' +
-                                            data +
-                                            "</span>"
-                                        );
-                                    }
-                                    return '<span class="badge badge-success" style="font-size: 1em;">' + data + "</span>";
+                                    return data ? data : "-";
                                 },
                             },
                             {
-                                data: "item_price_per_piece",
+                                data: "item_name",
+                                render: function (data) {
+                                    return data ? data : "-";
+                                },
+                            },
+                            {
+                                data: "variant_one",
+                                render: function (data) {
+                                    return data ? data : "-";
+                                },
+                            },
+                            {
+                                data: "variant_two",
+                                render: function (data) {
+                                    return data ? data : "-";
+                                },
+                            },
+                            {
+                                data: "size",
+                                render: function (data) {
+                                    return data ? data : "-";
+                                },
+                            },
+                            {
+                                data: "microns",
+                                render: function (data) {
+                                    return data ? data : "-";
+                                },
+                            },
+                            {
+                                data: "gsm",
+                                render: function (data) {
+                                    return data ? data : "-";
+                                },
+                            },
+                            {
+                                data: "sheets_per_pack",
+                                render: function (data) {
+                                    return data !== null && data !== undefined && data !== "" ? data : "-";
+                                },
+                            },
+                            {
+                                data: "price_without_shipping_fee",
                                 render: function (data) {
                                     return "₱" + data;
                                 },
                             },
-                            { data: "item_parts_per_piece" },
+                            {
+                                data: "estimated_shipping_fee",
+                                render: function (data) {
+                                    return "₱" + data;
+                                },
+                            },
+                            {
+                                data: "total_price",
+                                render: function (data) {
+                                    return "₱" + data;
+                                },
+                            },
+                            {
+                                data: "date_purchased",
+                                render: function (data) {
+                                    return data ? data : "-";
+                                },
+                            },
                             {
                                 data: null,
                                 orderable: false,
