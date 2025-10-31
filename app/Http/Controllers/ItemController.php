@@ -36,6 +36,10 @@ class ItemController extends Controller
                     'price_without_shipping_fee' => number_format((float) $item->price_without_shipping_fee, 2),
                     'estimated_shipping_fee' => number_format((float) $item->estimated_shipping_fee, 2),
                     'total_price' => number_format($totalPrice, 2),
+                    'item_quantity' => $item->item_quantity ?? 0,
+                    'item_price' => $item->item_price ?? 0,
+                    'item_price_per_piece' => $item->item_price_per_piece ?? 0,
+                    'item_price_per_part' => $item->item_price_per_part ?? 0,
                     'date_purchased' => optional($item->date_purchased)->format('Y-m-d'),
                     'created_at' => $item->created_at->format('Y-m-d H:i:s'),
                 ];

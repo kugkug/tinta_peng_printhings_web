@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -18,14 +18,29 @@ class Product extends Model
         'total_cost' => 'decimal:2',
     ];
 
-    /**
-     * The items that belong to the product (Bill of Materials)
-     */
-    public function items(): BelongsToMany
+    public function productItems(): HasMany
     {
-        return $this->belongsToMany(Item::class, 'product_items')
-            ->withPivot('quantity', 'unit_cost')
-            ->withTimestamps();
+        return $this->hasMany(ProductItem::class);
+    }
+
+    public function materials(): HasMany
+    {
+        return $this->productItems()->where('component_type', 'materials');
+    }
+
+    public function inks(): HasMany
+    {
+        return $this->productItems()->where('component_type', 'ink');
+    }
+
+    public function packaging(): HasMany
+    {
+        return $this->productItems()->where('component_type', 'packaging');
+    }
+
+    public function histories(): HasMany
+    {
+        return $this->hasMany(ProductHistory::class);
     }
 
     /**
@@ -33,8 +48,12 @@ class Product extends Model
      */
     public function calculateTotalCost(): void
     {
-        $totalCost = $this->items->sum(function ($item) {
-            return $item->pivot->quantity * $item->pivot->unit_cost;
+        $totalCost = $this->productItems->sum(function (ProductItem $component) {
+            if (! is_null($component->total_cost)) {
+                return $component->total_cost;
+            }
+
+            return ($component->quantity ?? 0) * ($component->unit_cost ?? 0);
         });
 
         $this->update(['total_cost' => $totalCost]);

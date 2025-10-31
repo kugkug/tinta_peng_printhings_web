@@ -43,6 +43,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/products/delete', [ProductController::class, 'apiProductsDelete'])->name('api.products.delete');
     Route::post('/products/generate-code', [ProductController::class, 'apiProductsGenerateCode'])->name('api.products.generate-code');
     Route::post('/products/check-code', [ProductController::class, 'apiProductsCheckCode'])->name('api.products.check-code');
+    Route::post('/products/history/list', [ProductController::class, 'apiProductsHistoryList'])->name('api.products.history.list');
     
     // Settings API
     Route::post('/settings/units/list', [SettingsController::class, 'apiSettingsUnitsList'])->name('api.settings.units.list');
